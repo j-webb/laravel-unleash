@@ -1,0 +1,29 @@
+{
+    "name": "j-webb/laravel-unleash",
+    "description": "An Unleash client for Laravel",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/support": "^5.8|^6",
+        "illuminate/http": "^5.8|^6"
+    },
+    "autoload": {
+        "psr-4": {
+            "JWebb\\Unleash\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jonathan Webb",
+            "email": "jonwebb247@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JWebb\\Unleash\\Providers\\ServiceProvider"
+            ]
+        }
+    }
+}
