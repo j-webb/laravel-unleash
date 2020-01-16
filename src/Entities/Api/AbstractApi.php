@@ -26,14 +26,14 @@ abstract class AbstractApi
      *
      * @var string
      */
-    protected string $endpoint;
+    protected $endpoint;
 
     /**
      * The API entity name
      *
      * @var string
      */
-    protected string $entityName;
+    protected $entityName;
 
     /**
      * The API query parameters
