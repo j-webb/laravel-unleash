@@ -11,10 +11,6 @@ class Unleash
 
     public function __construct(Client $client)
     {
-        if(!config('unleash.enabled')) {
-            return;
-        }
-
         $this->client = $client;
     }
 

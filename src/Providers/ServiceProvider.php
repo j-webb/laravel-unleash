@@ -39,6 +39,10 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
+        if (! config('unleash.enabled')) {
+            return;
+        }
+
         $this->publishes([
             $this->getConfigPath() => config_path('unleash.php'),
         ]);
