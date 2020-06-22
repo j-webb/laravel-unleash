@@ -59,10 +59,6 @@ abstract class AbstractApi
      */
     public function all()
     {
-        if (!config('unleash.enabled')) {
-            return [];
-        }
-
         try {
             $response = $this->client->get($this->getApiEndpoint(), $this->prepareParams());
             $response = json_decode((string)$response->getBody());
@@ -87,10 +83,6 @@ abstract class AbstractApi
      */
     public function get(string $name)
     {
-        if (!config('unleash.enabled')) {
-            return [];
-        }
-
         $this->params = ['namePrefix' => $name];
 
         try {
