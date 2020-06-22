@@ -2,6 +2,8 @@
 
 namespace JWebb\Unleash\Entities\Api;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use JWebb\Unleash\Entities\Feature as FeatureEntity;
 use JWebb\Unleash\Interfaces\Api\Feature as FeatureInterface;
 
@@ -28,14 +30,39 @@ class Feature extends AbstractApi implements FeatureInterface
      */
     protected $entityName = "features";
 
-
     /**
-     * Get all of the Features from the API resource.
+     * Run checks and get all Features.
      *
      * @return mixed
      * @throws \Exception
      */
-    public function all()
+    public function getAll()
+    {
+        if (! config('unleash.enabled')) {
+            return [];
+        }
+
+        if (! config('unleash.protection.enabled')) {
+            return $this->getCached();
+        }
+
+        try {
+            $features = $this->getCached();
+            Cache::forever('unleash.feature.failover', $features);
+            return $features;
+        } catch (\Exception $e) {
+            Log::error('Could not access your Unleash endpoint. Using cache backup.');
+            return Cache::get('unleash.feature.failover', []);
+        }
+    }
+
+    /**
+     * Check we can use cache and return features.
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getCached()
     {
         if (config('unleash.cache.enabled')) {
             return cache()->remember('unleash.features', config('unleash.cache.ttl'), function () {
@@ -54,7 +81,7 @@ class Feature extends AbstractApi implements FeatureInterface
      */
     public function getEnabled(): array
     {
-        $features = $this->all();
+        $features = $this->getAll();
 
         $enabledFeatures = collect($features)->filter(function ($feature) {
                 return $feature->enabled;
@@ -73,7 +100,7 @@ class Feature extends AbstractApi implements FeatureInterface
      */
     public function getActive(bool $enabledOnly = true): array
     {
-        $features = $this->all();
+        $features = $this->getAll();
 
         $activeFeatures = collect($features)->filter(function ($feature) use($enabledOnly) {
                 return $feature->isActive($enabledOnly);
