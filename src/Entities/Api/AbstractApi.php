@@ -54,10 +54,10 @@ abstract class AbstractApi
     /**
      * Get all of the Entities from the API resource.
      *
-     * @return mixed
+     * @return array
      * @throws \Exception
      */
-    public function all()
+    public function all(): array
     {
         try {
             $response = $this->client->get($this->getApiEndpoint(), $this->prepareParams());
@@ -120,7 +120,7 @@ abstract class AbstractApi
      *
      * @return array
      */
-    public function prepareParams()
+    public function prepareParams(): array
     {
         return $this->params;
     }
@@ -141,7 +141,7 @@ abstract class AbstractApi
      *
      * @return string
      */
-    public function getApiEndpoint()
+    public function getApiEndpoint(): string
     {
         return $this->endpoint . "/" . $this->entityName;
     }
