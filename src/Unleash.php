@@ -7,14 +7,24 @@ use JWebb\Unleash\Entities\Api\Feature;
 
 class Unleash
 {
-    public $client;
+    /**
+     * @var Client
+     */
+    public Client $client;
 
+    /**
+     * Unleash constructor.
+     * @param  Client  $client
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
 
-    public function setClient($client)
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client)
     {
         $this->client = $client;
     }

@@ -7,6 +7,10 @@ use JWebb\Unleash\Interfaces\Strategy;
 
 class RemoteAddressStrategy extends AbstractStrategy implements Strategy
 {
+    /**
+     * @param  array  $params
+     * @return bool
+     */
     public function isEnabled(array $params): bool
     {
         $remoteAddressesString = Arr::get($params, 'IPs', '');
