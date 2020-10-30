@@ -44,7 +44,7 @@ Laravel Unleash comes with a selection of activation strategies out of the box. 
 You may also add custom strategy classes by adding them on a new line after the existing strategies.
 
 #### Setting up the Middleware
-The module comes bundles with a middleware for you to perform a feature check on routes and/or controllers.
+The module comes bundled with middleware for you to perform a feature check on routes and/or controllers.
 ```php
 #/app/Http/Kernal.php
 protected $routeMiddleware = [
@@ -54,20 +54,32 @@ protected $routeMiddleware = [
 ];
 ```
 
+Once added to your `Kernal.php` file, you can use this in any area where middleware is applicable.
+As an example, you could use this in a controller.
+```php
+
+public function __construct()
+{
+    $this->middleware('feature:your_feature_name');
+}
+
+```
+See the [Laravel Docs](https://laravel.com/docs/middleware) for more information.
+
 ## Usage
 
 Checking individual features
 ```php
-if (Unleash::feature()->isEnabled('your_feature')) {
-    // Your feature is enabled
-}
-
 if (Unleash::feature()->isActive('your_feature')) {
     // Your feature is enabled and is applicable (strategy activated)
 }
 
 if (Unleash::feature()->isActive('your_feature', false)) {
     // Your feature is active (strategy activated), but may not be enabled
+}
+
+if (Unleash::feature()->isEnabled('your_feature')) {
+    // Your feature is enabled
 }
 ```
 
