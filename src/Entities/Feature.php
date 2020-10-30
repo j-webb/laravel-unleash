@@ -33,7 +33,7 @@ class Feature extends AbstractEntity
                 return false;
             }
 
-            $strategy = new $activeStrategies[$name];
+            $strategy = new $activeStrategies[$name]();
 
             if (!$strategy instanceof Strategy) {
                 throw new \Exception("${$name} does not implement base Strategy.");
