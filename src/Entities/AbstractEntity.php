@@ -61,6 +61,7 @@ abstract class AbstractEntity
         };
         return lcfirst(preg_replace_callback('/(^|_)([a-z])/', $callback, $str));
     }
+    
     /**
      * @param string $str Snake case string
      *
@@ -73,6 +74,7 @@ abstract class AbstractEntity
         };
         return ucfirst(preg_replace_callback('/(^|_)([a-z])/', $callback, $str));
     }
+
     /**
      * Convert the entity to an array.
      *

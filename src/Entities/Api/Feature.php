@@ -33,10 +33,10 @@ class Feature extends AbstractApi implements FeatureInterface
     /**
      * Run checks and get all Features.
      *
-     * @return mixed
+     * @return array
      * @throws \Exception
      */
-    public function getAll()
+    public function getAll(): array
     {
         if (! config('unleash.enabled')) {
             return [];
@@ -59,10 +59,10 @@ class Feature extends AbstractApi implements FeatureInterface
     /**
      * Check we can use cache and return features.
      *
-     * @return mixed
+     * @return array
      * @throws \Exception
      */
-    protected function getCached()
+    protected function getCached(): array
     {
         if (config('unleash.cache.enabled')) {
             return cache()->remember('unleash.features', config('unleash.cache.ttl'), function () {

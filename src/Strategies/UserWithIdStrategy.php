@@ -7,6 +7,10 @@ use JWebb\Unleash\Interfaces\Strategy;
 
 class UserWithIdStrategy extends AbstractStrategy implements Strategy
 {
+    /**
+     * @param  array  $params
+     * @return bool
+     */
     public function isEnabled(array $params): bool
     {
         $userIds = explode(',', Arr::get($params, 'userIds', ''));

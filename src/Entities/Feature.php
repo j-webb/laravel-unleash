@@ -6,9 +6,18 @@ use JWebb\Unleash\Interfaces\Strategy;
 
 class Feature extends AbstractEntity
 {
-    public $name;
+    /**
+     * Whether the feature is enabled
+     *
+     * @var boolean
+     */
     public $enabled;
-    protected $description;
+
+    /**
+     * Strategies relevant to this feature
+     *
+     * @var array
+     */
     protected $strategies;
 
     /**
