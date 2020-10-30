@@ -85,7 +85,7 @@ class Feature extends AbstractApi implements FeatureInterface
 
         $enabledFeatures = collect($features)->filter(function ($feature) {
                 return $feature->enabled;
-            })
+        })
             ->toArray();
 
         return $enabledFeatures;
@@ -102,9 +102,9 @@ class Feature extends AbstractApi implements FeatureInterface
     {
         $features = $this->getAll();
 
-        $activeFeatures = collect($features)->filter(function ($feature) use($enabledOnly) {
+        $activeFeatures = collect($features)->filter(function ($feature) use ($enabledOnly) {
                 return $feature->isActive($enabledOnly);
-            })
+        })
             ->toArray();
 
         return $activeFeatures;
