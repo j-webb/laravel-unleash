@@ -40,7 +40,7 @@ abstract class AbstractApi
      *
      * @var array
      */
-    protected $params;
+    protected $params = [];
 
     /**
      *
