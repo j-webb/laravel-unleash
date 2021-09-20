@@ -3,7 +3,7 @@
 namespace JWebb\Unleash\Middleware;
 
 use Closure;
-use JWebb\Unleash\Facades\Unleash;
+use JWebb\Unleash\Unleash;
 
 class CheckFeature
 {
@@ -17,7 +17,7 @@ class CheckFeature
      */
     public function handle($request, Closure $next, $featureName)
     {
-        if (!Unleash::feature()->isEnabled($featureName)) {
+        if (!app(Unleash::class)->isEnabled($featureName)) {
             abort(404);
         }
 

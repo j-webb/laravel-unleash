@@ -3,9 +3,11 @@
     "description": "An Unleash client for Laravel",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.3",
         "illuminate/support": "^6|^7|^8",
-        "illuminate/http": "^6|^7|^8"
+        "illuminate/http": "^6|^7|^8",
+        "unleash/client": "^1.2",
+        "symfony/cache": "^5.3"
     },
     "autoload": {
         "psr-4": {

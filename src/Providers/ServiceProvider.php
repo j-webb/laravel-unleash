@@ -2,10 +2,11 @@
 
 namespace JWebb\Unleash\Providers;
 
-use JWebb\Unleash\Unleash;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use JWebb\Unleash\Unleash;
+use Unleash\Client\UnleashBuilder;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -14,20 +15,30 @@ class ServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton('unleash', function ($app) {
-            $client = new Client([
-                'base_uri' => config('unleash.url'),
-                'headers' => [
-                    'UNLEASH-APPNAME' => config('unleash.application_name'),
-                    'UNLEASH-INSTANCEID' => config('unleash.instance_id'),
-                ]
-            ]);
-            return new Unleash($client);
-        });
+        $this->app->singleton(Unleash::class, function ($app) {
+            $builder = UnleashBuilder::create()
+                ->withInstanceId(config('unleash.instance_id'))
+                ->withAppUrl(config('unleash.url'))
+                ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
+                ->withContextProvider(new UnleashContextProvider());
 
-        $this->app->alias('unleash', Unleash::class);
+            if (config('unleash.automatic_registration')) {
+                $builder = $builder->withAutomaticRegistrationEnabled(config('unleash.automatic_registration'));
+            }
+            if (config('unleash.metrics')) {
+                $builder = $builder->withMetricsEnabled(config('unleash.metrics'));
+            }
+            if (config('unleash.cache.enabled')) {
+                $builder = $builder->withCacheTimeToLive(config('unleash.cache.ttl'));
+            }
+            if (config('unleash.api_key')) {
+                $builder = $builder->withHeader('Authorization', config('unleash.api_key'));
+            }
+
+            return new Unleash($builder->build());
+        });
 
         $this->mergeConfigFrom($this->getConfigPath(), 'unleash');
     }
@@ -37,7 +48,7 @@ class ServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if (! config('unleash.enabled')) {
             return;
@@ -48,11 +59,11 @@ class ServiceProvider extends IlluminateServiceProvider
         ]);
 
         Blade::if('featureEnabled', function (string $feature) {
-            return app(Unleash::class)->isFeatureEnabled($feature);
+            return app(Unleash::class)->isEnabled($feature);
         });
 
         Blade::if('featureDisabled', function (string $feature) {
-            return app(Unleash::class)->isFeatureDisabled($feature);
+            return app(Unleash::class)->isEnabled($feature);
         });
     }
 

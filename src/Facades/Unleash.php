@@ -13,6 +13,6 @@ class Unleash extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'JWebb\Unleash\Unleash';
+        return 'unleash';
     }
 }

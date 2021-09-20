@@ -1,6 +1,12 @@
 # Laravel Unleash
 
-A simple Unleash client for Laravel. It is compatible with the [Unlesah-hosted.com SaaS offering](https://www.unleash-hosted.com/) and [Unleash Open-Source](https://github.com/finn-no/unleash).
+A simple Unleash component for Laravel. It is compatible with the [Unlesah-hosted.com SaaS offering](https://www.getunleash.io/), [Unleash Open-Source](https://github.com/Unleash/unleash), and (GitLab's Feature Flag system)[https://docs.gitlab.com/ee/operations/feature_flags.html], which is built on Unleash.
+
+V2 of this package is a wrapper and extension of the (Unleash PHP SDK)[https://docs.getunleash.io/sdks/php_sdk] that is compatible with Laravel.
+
+## V2 limitations/gotchas
+- [ ] Cache implementation is not extensible
+- [ ] Not yet able to add custom strategies (as per V1)
 
 ## Getting started
 
@@ -28,20 +34,28 @@ UNLEASH_URL=https://app.unleash-hosted.com/
 # Enable or disable the Laravel Unleash client. If disabled, all feature checks will return false
 UNLEASH_ENABLED=true
 
-# Currently unused, but is sent as a header alongside the Unleash API requests
-UNLEASH_APPLICATION_NAME=Laravel 
+# For compatibility with Unleash V4, or other authentcation methods. Appends itself to the `Authorization` header for each request
+UNLEASH_API_KEY=123456
 
-# Currently unused, but is sent as a header alongside the Unleash API requests
-UNLEASH_INSTANCE_ID=production 
+# Instance id for this application (typically hostname, podId or similar)
+UNLEASH_INSTANCE_ID=default 
+
+# The Unleash environment name, which can be used to as a parameter for enabling/disabling features for local or development environments
+# See: https://docs.getunleash.io/advanced/strategy_constraints#constrain-on-a-specific-environment
+UNLEASH_ENVIRONMENT=production 
+
+# Automatically registers the client instance with the unleash server
+UNLEASH_AUTOMATIC_REGISTRATION=true 
+
+# Enable/Disable metrics
+UNLEASH_METRICS=true 
+
+# Enable/Disable failsafe cache for data
+# See: https://docs.getunleash.io/client-specification#system-overview
+UNLEASH_CACHE_ENABLED=true 
+UNLEASH_CACHE_TTL=30 
+
 ```
-
-#### Setting up caching/polling
-The configuration contains values to enable/disable cache, as well as set a cache TTL. You can mimic the recommended Unleash polling rate by setting a TTL of 15 seconds.
-
-#### Setting up Activation Strategies
-Laravel Unleash comes with a selection of activation strategies out of the box. You can enable/disable these by commenting out the required line inside the configuration.
-
-You may also add custom strategy classes by adding them on a new line after the existing strategies.
 
 #### Setting up the Middleware
 The module comes bundled with middleware for you to perform a feature check on routes and/or controllers.
@@ -70,15 +84,7 @@ See the [Laravel Docs](https://laravel.com/docs/middleware) for more information
 
 Checking individual features
 ```php
-if (Unleash::feature()->isActive('your_feature')) {
-    // Your feature is enabled and is applicable (strategy activated)
-}
-
-if (Unleash::feature()->isActive('your_feature', false)) {
-    // Your feature is active (strategy activated), but may not be enabled
-}
-
-if (Unleash::feature()->isEnabled('your_feature')) {
+if (app(\JWebb\Unleash\Unleash::class)->isEnabled('your_feature')) {
     // Your feature is enabled
 }
 ```
@@ -86,16 +92,10 @@ if (Unleash::feature()->isEnabled('your_feature')) {
 Using array of features
 ```php
 // List of all features, enabled or disabled
-$allFeatures = Unleash::feature()->all();
+$allFeatures = app(\JWebb\Unleash\Unleash::class::class)->getFeatures();
 
 // List of all enabled features
-$enabledFeatures = Unleash::feature()->getEnabled();
-
-// List of all enabled and active features
-$activeFeatures = Unleash::feature()->getActive();
-
-// List of all active features, but may not be enabled
-$activeFeatures = Unleash::feature()->getActive(false); 
+$enabledFeatures = app(\JWebb\Unleash\Unleash::class::class)->getFeatures(true);
 ```
 
 Using middleware on a controller
@@ -117,3 +117,18 @@ Route::get('/', function () {
 })->middleware('feature:your_feature');
 ```
 
+Because the component is a wrapper of the official (Unleash Client SDK)[https://github.com/Unleash/unleash-client-php], you can pass relevant context to your checks:
+``` php
+$context = (new UnleashContext())
+    ->setCurrentUserId('some-user-id-from-app')
+    ->setIpAddress('127.0.0.1')
+    ->setSessionId('sess-123456');
+$enabled = app(\JWebb\Unleash\Unleash::class::class)->isEnabled('some-feature', $context);
+```
+*Note: User ID information is automatically added to the context using the (Laravel Auth module)[https://laravel.com/docs/8.x/authentication]*
+
+Or get variant information
+``` php
+$variant = $unleash->getVariant('nonexistentFeature');
+assert($variant->isEnabled() === false);
+```
