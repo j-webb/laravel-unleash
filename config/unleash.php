@@ -27,18 +27,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name
-    |--------------------------------------------------------------------------
-    |
-    | The name of your application which is passed through to your Unleash
-    | instance for identification purposes.
-    |
-    */
-
-    'application_name' => env('UNLEASH_APPLICATION_NAME', env('app.name')),
-
-    /*
-    |--------------------------------------------------------------------------
     | Instance ID
     |--------------------------------------------------------------------------
     |
@@ -51,48 +39,63 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Environment
+    |--------------------------------------------------------------------------
+    |
+    | The App environment. Useful when using a GitLab integration
+    |
+    */
+
+    'environment' => env('UNLEASH_ENVIRONMENT', env('app.env')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatic Registration
+    |--------------------------------------------------------------------------
+    |
+    | Enable the Registration System.
+    | GitLab doesn't use registration system, you can set the SDK to disable
+    | automatic registration and save one http call.
+    |
+    */
+
+    'automatic_registration' => env('UNLEASH_AUTOMATIC_REGISTRATION', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Metrics
+    |--------------------------------------------------------------------------
+    |
+    | Pass metrics to the API.
+    | GitLab doesn't read metrics, you can disable this to save some http calls.
+    |
+    */
+
+    'metrics' => env('UNLEASH_METRICS', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Caching
     |--------------------------------------------------------------------------
     |
     | Unleash cache settings. This will cache any API object responses for the
     | duration of the TTL.
     |
-    | Unleash documentation has a recommended "polling" timeout of 15 seconds,
-    | so you can mimic that here using the TTL value.
     */
 
     'cache' => [
-        'enabled' => false,
-        'ttl' => 15,
+        'enabled' => env('UNLEASH_CACHE_ENABLED', false),
+        'ttl' => env('UNLEASH_CACHE_TTL', 30),
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Endpoint Protection
+    | API Key
     |--------------------------------------------------------------------------
     |
-    | If the request to your Unleash instance fails, use a cached
-    | version of the last successful result.
+    | API Key for compatibility with Unleash V4
     |
     */
 
-    'protection' => [
-        'enabled' => true,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Strategies
-    |--------------------------------------------------------------------------
-    |
-    | Mapping of strategies used to guard features on Unleash. The default
-    | strategies are already mapped below.
-    |
-    */
-    'strategies' => [
-        'applicationHostname'   => \JWebb\Unleash\Strategies\ApplicationHostnameStrategy::class,
-        'default'               => \JWebb\Unleash\Strategies\DefaultStrategy::class,
-        'remoteAddress'         => \JWebb\Unleash\Strategies\RemoteAddressStrategy::class,
-        'userWithId'           => \JWebb\Unleash\Strategies\UserWithIdStrategy::class,
-    ],
+    'api_key' => env('UNLEASH_API_KEY', null)
 ];
