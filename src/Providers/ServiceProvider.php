@@ -21,11 +21,14 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->mergeConfigFrom($this->getConfigPath(), 'unleash');
 
         $this->app->singleton(Unleash::class, function ($app) {
+            $strategyProvider = config('unleash.strategy_provider');
+
             $builder = UnleashBuilder::create()
                 ->withInstanceId(config('unleash.instance_id'))
                 ->withAppUrl(config('unleash.url'))
                 ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
-                ->withContextProvider(new UnleashContextProvider());
+                ->withContextProvider(new UnleashContextProvider())
+                ->withStrategies(...(new $strategyProvider())->getStrategies());
 
             if (config('unleash.automatic_registration')) {
                 $builder = $builder->withAutomaticRegistrationEnabled(config('unleash.automatic_registration'));

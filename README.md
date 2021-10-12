@@ -4,9 +4,6 @@ A simple Unleash component for Laravel. It is compatible with the [Unlesah-hoste
 
 V2 of this package is a wrapper and extension of the [Unleash PHP SDK](https://docs.getunleash.io/sdks/php_sdk) that is compatible with Laravel.
 
-## V2 limitations/gotchas
-- [ ] Not yet able to add custom strategies (as per V1)
-
 ## Getting started
 
 ### 1. Install the Laravel Unleash via Composer
@@ -82,6 +79,8 @@ See the [Laravel Docs](https://laravel.com/docs/middleware) for more information
 #### Setting up a custom cache handler
 If the cache option is enabled, by default the component will use the Laravel Cache module. By utilizing the `UnleashCacheHandlerInterface`, you can create your own PSR-16 compatible implementation and override the `unleash.cache.handler` config value with your handler class.
 
+#### Setting up custom strategies
+To add your own strategy, you can override or create your own Strategies Provider. A `UnleashStrategiesProviderInterface` is included for convenience. Once your custom class is build, you should modify the `unleash.strategy_provider` config value.
 
 ## Usage
 

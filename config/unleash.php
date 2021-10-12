@@ -98,5 +98,16 @@ return [
     |
     */
 
-    'api_key' => env('UNLEASH_API_KEY', null)
+    'api_key' => env('UNLEASH_API_KEY', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Strategy Provider
+    |--------------------------------------------------------------------------
+    |
+    | The provider which handles and initializes your strategies
+    |
+    */
+
+    'strategy_provider' => JWebb\Unleash\Providers\UnleashStrategiesProvider::class,
 ];
