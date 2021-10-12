@@ -1,8 +1,8 @@
 # Laravel Unleash
 
-A simple Unleash component for Laravel. It is compatible with the [Unlesah-hosted.com SaaS offering](https://www.getunleash.io/), [Unleash Open-Source](https://github.com/Unleash/unleash), and (GitLab's Feature Flag system)[https://docs.gitlab.com/ee/operations/feature_flags.html], which is built on Unleash.
+A simple Unleash component for Laravel. It is compatible with the [Unlesah-hosted.com SaaS offering](https://www.getunleash.io/), [Unleash Open-Source](https://github.com/Unleash/unleash), and [GitLab's Feature Flag system](https://docs.gitlab.com/ee/operations/feature_flags.html), which is built on Unleash.
 
-V2 of this package is a wrapper and extension of the (Unleash PHP SDK)[https://docs.getunleash.io/sdks/php_sdk] that is compatible with Laravel.
+V2 of this package is a wrapper and extension of the [Unleash PHP SDK](https://docs.getunleash.io/sdks/php_sdk) that is compatible with Laravel.
 
 ## V2 limitations/gotchas
 - [ ] Cache implementation is not extensible
@@ -117,7 +117,7 @@ Route::get('/', function () {
 })->middleware('feature:your_feature');
 ```
 
-Because the component is a wrapper of the official (Unleash Client SDK)[https://github.com/Unleash/unleash-client-php], you can pass relevant context to your checks:
+Because the component is a wrapper of the official [Unleash Client SDK](https://github.com/Unleash/unleash-client-php), you can pass relevant context to your checks:
 ``` php
 $context = (new UnleashContext())
     ->setCurrentUserId('some-user-id-from-app')
@@ -125,7 +125,7 @@ $context = (new UnleashContext())
     ->setSessionId('sess-123456');
 $enabled = app(\JWebb\Unleash\Unleash::class::class)->isEnabled('some-feature', $context);
 ```
-*Note: User ID information is automatically added to the context using the (Laravel Auth module)[https://laravel.com/docs/8.x/authentication]*
+*Note: User ID information is automatically added to the context using the [Laravel Auth module](https://laravel.com/docs/8.x/authentication)*
 
 Or get variant information
 ``` php
