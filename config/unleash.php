@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'environment' => env('UNLEASH_ENVIRONMENT', env('app.env')),
+    'environment' => env('UNLEASH_ENVIRONMENT', config('app.env')),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,6 +86,7 @@ return [
     'cache' => [
         'enabled' => env('UNLEASH_CACHE_ENABLED', false),
         'ttl' => env('UNLEASH_CACHE_TTL', 30),
+        'handler' => JWebb\Unleash\Cache\CacheHandler::class
     ],
 
     /*

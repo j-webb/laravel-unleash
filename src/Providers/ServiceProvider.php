@@ -5,6 +5,7 @@ namespace JWebb\Unleash\Providers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use JWebb\Unleash\Interfaces\UnleashCacheHandlerInterface;
 use JWebb\Unleash\Unleash;
 use Unleash\Client\UnleashBuilder;
 
@@ -17,6 +18,8 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom($this->getConfigPath(), 'unleash');
+
         $this->app->singleton(Unleash::class, function ($app) {
             $builder = UnleashBuilder::create()
                 ->withInstanceId(config('unleash.instance_id'))
@@ -31,7 +34,13 @@ class ServiceProvider extends IlluminateServiceProvider
                 $builder = $builder->withMetricsEnabled(config('unleash.metrics'));
             }
             if (config('unleash.cache.enabled')) {
-                $builder = $builder->withCacheTimeToLive(config('unleash.cache.ttl'));
+                /** @var UnleashCacheHandlerInterface $cacheHandler */
+                $cacheHandler = config('unleash.cache.handler');
+
+                $builder = $builder->withCacheHandler(
+                    (new $cacheHandler())->init(),
+                    config('unleash.cache.ttl')
+                );
             }
             if (config('unleash.api_key')) {
                 $builder = $builder->withHeader('Authorization', config('unleash.api_key'));
@@ -39,8 +48,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
             return new Unleash($builder->build());
         });
-
-        $this->mergeConfigFrom($this->getConfigPath(), 'unleash');
     }
 
     /**
