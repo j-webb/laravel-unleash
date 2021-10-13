@@ -86,7 +86,7 @@ To add your own strategy, you can override or create your own Strategies Provide
 
 Checking individual features
 ```php
-if (app(\JWebb\Unleash\Unleash::class)->isEnabled('your_feature')) {
+if (Unleash::isEnabled('your_feature')) {
     // Your feature is enabled
 }
 ```
@@ -94,10 +94,10 @@ if (app(\JWebb\Unleash\Unleash::class)->isEnabled('your_feature')) {
 Using array of features
 ```php
 // List of all features, enabled or disabled
-$allFeatures = app(\JWebb\Unleash\Unleash::class::class)->getFeatures();
+$allFeatures = Unleash::getFeatures();
 
 // List of all enabled features
-$enabledFeatures = app(\JWebb\Unleash\Unleash::class::class)->getFeatures(true);
+$enabledFeatures = Unleash::getFeatures(true);
 ```
 
 Using middleware on a controller
@@ -125,7 +125,7 @@ $context = (new UnleashContext())
     ->setCurrentUserId('some-user-id-from-app')
     ->setIpAddress('127.0.0.1')
     ->setSessionId('sess-123456');
-$enabled = app(\JWebb\Unleash\Unleash::class::class)->isEnabled('some-feature', $context);
+$enabled = Unleash::isEnabled('some-feature', $context);
 ```
 *Note: User ID information is automatically added to the context using the [Laravel Auth module](https://laravel.com/docs/8.x/authentication)*
 
