@@ -41,7 +41,11 @@ class Unleash implements UnleashImplemtation
      */
     public function isEnabled(string $featureName, ?Context $context = null, bool $default = false): bool
     {
-        return $this->client->isEnabled($featureName, $context, $default);
+        try {
+            return $this->client->isEnabled($featureName, $context, $default);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -52,13 +56,17 @@ class Unleash implements UnleashImplemtation
      */
     public function getFeatures(bool $onlyEnabled = false, ?Context $context = null): array
     {
-        $features = $this->getRepository()->getFeatures();
+        try {
+            $features = $this->getRepository()->getFeatures();
 
-        $allFeatures = array_map(fn (Feature $f) => $this->isEnabled($f->getName(), $context), $features);
+            $allFeatures = array_map(fn(Feature $f) => $this->isEnabled($f->getName(), $context), $features);
 
-        return $onlyEnabled ?
-            array_filter($allFeatures, fn ($f) => !!$f) :
-            $allFeatures;
+            return $onlyEnabled ?
+                array_filter($allFeatures, fn($f) => !!$f) :
+                $allFeatures;
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     /**
