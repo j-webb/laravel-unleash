@@ -44,9 +44,10 @@ class Unleash implements UnleashImplemtation
         try {
             return $this->client->isEnabled($featureName, $context, $default);
         } catch (\Exception $e) {
-            return false;
+            return $default;
         }
     }
+
 
     /**
      * @param  bool  $onlyEnabled
