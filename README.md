@@ -91,14 +91,35 @@ if (Unleash::isEnabled('your_feature')) {
 }
 ```
 
-Using array of features
+Using array of features.
 ```php
 // List of all features, enabled or disabled
 $allFeatures = Unleash::getFeatures();
+Result: [
+    'toggles' => [
+        'feature_1' => [
+            'enabled' => true,
+            'name' => 'feature_1'
+        ],
+        'feature_2' => [
+            'enabled' => false,
+            'name' => 'feature_2'
+        ]
+    ]
+]
 
 // List of all enabled features
 $enabledFeatures = Unleash::getFeatures(true);
+Result: [
+    'toggles' => [
+        'feature_1' => [
+            'enabled' => true,
+            'name' => 'feature_1'
+        ]
+    ]
+]
 ```
+*Note: The result matches that which would be returned from the official [Unleash Proxy](https://docs.getunleash.io/sdks/unleash-proxy) instances. This means you could use your Laravel application as an Unleash Proxy endpoint, which is compatible with the official client-side Unleash Proxy SDKs*
 
 Using middleware on a controller
 ``` php

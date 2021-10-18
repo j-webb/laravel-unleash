@@ -60,11 +60,19 @@ class Unleash implements UnleashImplemtation
         try {
             $features = $this->getRepository()->getFeatures();
 
-            $allFeatures = array_map(fn(Feature $f) => $this->isEnabled($f->getName(), $context), $features);
+            $mappedFeatures = array_map(function ($item) use ($context) {
+                /** @var $item Feature */
+                return [
+                    'enabled' => $this->isEnabled($item->getName(), $context),
+                    'name' => $item->getName(),
+                ];
+            }, $features);
 
-            return $onlyEnabled ?
-                array_filter($allFeatures, fn($f) => !!$f) :
-                $allFeatures;
+            $toggles['toggles'] = $onlyEnabled ? array_filter($mappedFeatures, function ($item) {
+                return $item['enabled'];
+            }) : $mappedFeatures;
+
+            return $toggles;
         } catch (\Exception $e) {
             return [];
         }
