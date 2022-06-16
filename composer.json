@@ -4,9 +4,9 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^7.3",
-        "illuminate/support": "^6|^7|^8",
-        "illuminate/http": "^6|^7|^8",
-        "unleash/client": "^1.2",
+        "illuminate/support": "^6|^7|^8|^9",
+        "illuminate/http": "^6|^7|^8|^9",
+        "unleash/client": "^1.5",
         "symfony/cache": "^5.3",
 		"psr/cache": "^1.0",
 		"psr/simple-cache": "^1.0"
