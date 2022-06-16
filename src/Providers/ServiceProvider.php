@@ -28,15 +28,11 @@ class ServiceProvider extends IlluminateServiceProvider
                 ->withAppUrl(config('unleash.url'))
                 ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
                 ->withContextProvider(new UnleashContextProvider())
-                ->withStrategies(...(new $strategyProvider())->getStrategies());
-
-            if (config('unleash.automatic_registration') !== null) {
-                $builder = $builder->withAutomaticRegistrationEnabled(config('unleash.automatic_registration'));
-            }
-            if (config('unleash.metrics') !== null) {
-                $builder = $builder->withMetricsEnabled(config('unleash.metrics'));
-            }
-            if (config('unleash.cache.enabled') !== null) {
+                ->withStrategies(...(new $strategyProvider())->getStrategies())
+                ->withAutomaticRegistrationEnabled(!! config('unleash.automatic_registration'))
+                ->withMetricsEnabled(!! config('unleash.metrics'));
+            
+            if (!! config('unleash.cache.enabled')) {
                 /** @var UnleashCacheHandlerInterface $cacheHandler */
                 $cacheHandler = config('unleash.cache.handler');
 
@@ -45,7 +41,7 @@ class ServiceProvider extends IlluminateServiceProvider
                     config('unleash.cache.ttl')
                 );
             }
-            if (config('unleash.api_key') !== null) {
+            if (!! config('unleash.api_key')) {
                 $builder = $builder->withHeader('Authorization', config('unleash.api_key'));
             }
 
