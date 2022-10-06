@@ -30,6 +30,9 @@ UNLEASH_URL=https://app.unleash-hosted.com/
 # Enable or disable the Laravel Unleash client. If disabled, all feature checks will return false
 UNLEASH_ENABLED=true
 
+# When APP_DEBUG is set to true, always pass feature flags (return as enabled)
+UNLEASH_PASS_ON_DEBUG=false
+
 # For compatibility with Unleash V4, or other authentcation methods. Appends itself to the `Authorization` header for each request
 UNLEASH_API_KEY=123456
 

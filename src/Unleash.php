@@ -41,13 +41,16 @@ class Unleash implements UnleashImplemtation
      */
     public function isEnabled(string $featureName, ?Context $context = null, bool $default = false): bool
     {
+        if (config('unleash.pass_on_debug', false) && config('app.debug', false)) {
+            return true;
+        }
+
         try {
             return $this->client->isEnabled($featureName, $context, $default);
         } catch (\Exception $e) {
             return $default;
         }
     }
-
 
     /**
      * @param  bool  $onlyEnabled
