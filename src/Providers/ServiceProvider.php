@@ -2,7 +2,6 @@
 
 namespace JWebb\Unleash\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use JWebb\Unleash\Interfaces\UnleashCacheHandlerInterface;
@@ -22,12 +21,13 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->app->singleton(Unleash::class, function ($app) {
             $strategyProvider = config('unleash.strategy_provider');
+            $contextProvider = config('unleash.context_provider');
 
             $builder = UnleashBuilder::create()
                 ->withInstanceId(config('unleash.instance_id'))
                 ->withAppUrl(config('unleash.url'))
                 ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
-                ->withContextProvider(new UnleashContextProvider())
+                ->withContextProvider(new $contextProvider())
                 ->withStrategies(...(new $strategyProvider())->getStrategies())
                 ->withAutomaticRegistrationEnabled(!! config('unleash.automatic_registration'))
                 ->withMetricsEnabled(!! config('unleash.metrics'));

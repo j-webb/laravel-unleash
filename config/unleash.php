@@ -110,4 +110,16 @@ return [
     */
 
     'strategy_provider' => JWebb\Unleash\Providers\UnleashStrategiesProvider::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Context Provider
+    |--------------------------------------------------------------------------
+    |
+    | The provider which handles and initializes the context, giving the option
+    | to sent more context, automatically.
+    |
+    */
+
+    'context_provider' => JWebb\Unleash\Providers\UnleashContextProvider::class,
 ];
