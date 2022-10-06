@@ -7,7 +7,7 @@
         "illuminate/support": "^6|^7|^8|^9",
         "illuminate/http": "^6|^7|^8|^9",
         "unleash/client": "^1.7",
-        "symfony/cache": "^5.3",
+        "symfony/cache": "^5.3|^6.1",
 	"psr/cache": "^1.0|^2.0|^3.0",
 	"psr/simple-cache": "^1.0|^2.0|^3.0"
     },
