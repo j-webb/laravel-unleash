@@ -82,6 +82,9 @@ If the cache option is enabled, by default the component will use the Laravel Ca
 #### Setting up custom strategies
 To add your own strategy, you can override or create your own Strategies Provider. A `UnleashStrategiesProviderInterface` is included for convenience. Once your custom class is build, you should modify the `unleash.strategy_provider` config value.
 
+#### Overwriting default context provider
+If you want to send more context by default, you can overwrite the `UnleashContextProvider`. Make sure that your class implements the `Unleash\Client\ContextProvider\UnleashContextProvider` interface (to prevent confusion with the UnleashContextProvider in this package, an option would be to alias it). After that, change the config value of `unleash.context_provider` to your custom created class.
+
 ## Usage
 
 Checking individual features
