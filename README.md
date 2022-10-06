@@ -56,7 +56,7 @@ UNLEASH_CACHE_TTL=30
 #### Setting up the Middleware
 The module comes bundled with middleware for you to perform a feature check on routes and/or controllers.
 ```php
-#/app/Http/Kernal.php
+#/app/Http/Kernel.php
 protected $routeMiddleware = [
     ...
     'feature' => \JWebb\Unleash\Middleware\CheckFeature::class,
@@ -64,7 +64,7 @@ protected $routeMiddleware = [
 ];
 ```
 
-Once added to your `Kernal.php` file, you can use this in any area where middleware is applicable.
+Once added to your `Kernel.php` file, you can use this in any area where middleware is applicable.
 As an example, you could use this in a controller.
 ```php
 
