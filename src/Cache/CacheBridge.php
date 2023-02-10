@@ -16,7 +16,7 @@ class CacheBridge implements CacheInterface
      * @param  null  $default
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null): mixed
     {
         return Cache::get($key, $default);
     }
@@ -76,7 +76,7 @@ class CacheBridge implements CacheInterface
     /**
      * @param array $keys
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple($keys): bool
     {
         foreach ($keys as $key) {
             $this->delete($key);
