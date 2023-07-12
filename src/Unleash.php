@@ -7,18 +7,17 @@ use Unleash\Client\DTO\Feature;
 use Unleash\Client\DTO\Variant;
 use Unleash\Client\Repository\UnleashRepository;
 use Unleash\Client\Unleash as UnleashClient;
-use Unleash\Client\Unleash as UnleashImplemtation;
 
-class Unleash implements UnleashImplemtation
+class Unleash implements UnleashClient
 {
     /**
-     * @var UnleashImplemtation
+     * @var UnleashClient
      */
     public UnleashClient $client;
 
     /**
      * Unleash constructor.
-     * @param  UnleashImplemtation  $client
+     * @param  UnleashClient  $client
      */
     public function __construct(UnleashClient $client)
     {

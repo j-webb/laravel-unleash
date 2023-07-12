@@ -80,6 +80,7 @@ return [
     |
     | Unleash cache settings. This will cache any API object responses for the
     | duration of the TTL.
+    | The cache is used to prevent stressing the feature flag endpoint.
     |
     */
 
@@ -87,6 +88,26 @@ return [
         'enabled' => env('UNLEASH_CACHE_ENABLED', false),
         'ttl' => env('UNLEASH_CACHE_TTL', 30),
         'handler' => JWebb\Unleash\Cache\CacheHandler::class
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP Client Override
+    |--------------------------------------------------------------------------
+    |
+    | HTTP Client configuration settings.
+    | Setting the timeout settings manually will break the connection to an
+    | unstable endpoint and fail early.
+    |
+    */
+
+    'http_client_override' => [
+        'enabled' => env('UNLEASH_HTTP_CLIENT_OVERRIDE', false),
+        'config' => [
+            'timeout' => env('UNLEASH_HTTP_TIMEOUT', 5),
+            'connect_timeout' => env('UNLEASH_HTTP_CONNECT_TIMEOUT', 5),
+        ]
     ],
 
     /*

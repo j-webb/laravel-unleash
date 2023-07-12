@@ -2,6 +2,7 @@
 
 namespace JWebb\Unleash\Providers;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use JWebb\Unleash\Interfaces\UnleashCacheHandlerInterface;
@@ -31,7 +32,11 @@ class ServiceProvider extends IlluminateServiceProvider
                 ->withStrategies(...(new $strategyProvider())->getStrategies())
                 ->withAutomaticRegistrationEnabled(!! config('unleash.automatic_registration'))
                 ->withMetricsEnabled(!! config('unleash.metrics'));
-            
+
+            if (!! config('unleash.http_client_override.enabled')) {
+                $builder = $builder->withHttpClient(new Client(config('unleash.http_client_override.config')));
+            }
+
             if (!! config('unleash.cache.enabled')) {
                 /** @var UnleashCacheHandlerInterface $cacheHandler */
                 $cacheHandler = config('unleash.cache.handler');
