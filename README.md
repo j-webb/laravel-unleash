@@ -158,3 +158,21 @@ Or get variant information
 $variant = $unleash->getVariant('nonexistentFeature');
 assert($variant->isEnabled() === false);
 ```
+
+### Blade
+
+You can use the Unleash Blade directive for checking if a feature is enabled in your Blade templates:
+
+```blade
+@featureEnabled('betaTester')
+    <p>You are a beta tester</p>
+@endfeatureEnabled
+```
+
+Or if a feature is **disabled**:
+
+```blade
+@featureDisabled('betaTester')
+    <p>Enroll now to be a beta tester.</p>
+@endfeatureDisabled
+```
