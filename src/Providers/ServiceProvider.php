@@ -74,7 +74,7 @@ class ServiceProvider extends IlluminateServiceProvider
         });
 
         Blade::if('featureDisabled', function (string $feature) {
-            return app(Unleash::class)->isEnabled($feature);
+            return !app(Unleash::class)->isEnabled($feature);
         });
     }
 
