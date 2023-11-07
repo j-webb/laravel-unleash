@@ -26,16 +26,13 @@ class ServiceProvider extends IlluminateServiceProvider
 
             $builder = UnleashBuilder::create()
                 ->withInstanceId(config('unleash.instance_id'))
+                ->withAppUrl(config('unleash.url'))
                 ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
                 ->withContextProvider(new $contextProvider())
                 ->withStrategies(...(new $strategyProvider())->getStrategies())
                 ->withAutomaticRegistrationEnabled(!! config('unleash.automatic_registration'))
                 ->withMetricsEnabled(!! config('unleash.metrics'));
 
-            $url = config('unleash.url');
-            if ($url && strlen($url) > 0) {
-                $builder = $builder->withAppUrl($url);
-            }
             if (!! config('unleash.http_client_override.enabled')) {
                 $builder = $builder->withHttpClient(new Client(config('unleash.http_client_override.config')));
             }
