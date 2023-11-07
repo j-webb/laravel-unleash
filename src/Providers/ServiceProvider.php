@@ -26,7 +26,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
             $builder = UnleashBuilder::create()
                 ->withInstanceId(config('unleash.instance_id'))
-                ->withAppUrl(config('unleash.url', 'http://localhost'))
+                ->withAppUrl(config('unleash.url'))
                 ->withAppName(config('unleash.environment')) // Same as `withGitlabEnvironment(...)`
                 ->withContextProvider(new $contextProvider())
                 ->withStrategies(...(new $strategyProvider())->getStrategies())
