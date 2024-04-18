@@ -1,5 +1,5 @@
 {
-    "name": "j-webb/laravel-unleash",
+    "name": "kjsoftware/laravel-unleash",
     "description": "An Unleash client for Laravel",
     "type": "library",
     "require": {
