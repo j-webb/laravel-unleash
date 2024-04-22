@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use JWebb\Unleash\Interfaces\UnleashCacheHandlerInterface;
 use JWebb\Unleash\Unleash;
+use Unleash\Client\Bootstrap\JsonSerializableBootstrapProvider;
 use Unleash\Client\UnleashBuilder;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -31,7 +32,12 @@ class ServiceProvider extends IlluminateServiceProvider
                 ->withContextProvider(new $contextProvider())
                 ->withStrategies(...(new $strategyProvider())->getStrategies())
                 ->withAutomaticRegistrationEnabled(!! config('unleash.automatic_registration'))
-                ->withMetricsEnabled(!! config('unleash.metrics'));
+                ->withMetricsEnabled(!! config('unleash.metrics'))
+                ->withFetchingEnabled(config('unleash.fetching_enabled'));
+
+            if (!! config('features')) {
+                $builder = $builder->withBootstrapProvider(new JsonSerializableBootstrapProvider(config('features')));
+            }
 
             if (!! config('unleash.http_client_override.enabled')) {
                 $builder = $builder->withHttpClient(new Client(config('unleash.http_client_override.config')));
@@ -67,6 +73,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->publishes([
             $this->getConfigPath() => config_path('unleash.php'),
+            $this->getFeatureConfigPath() => config_path('features.php'),
         ]);
 
         Blade::if('featureEnabled', function (string $feature) {
@@ -86,5 +93,15 @@ class ServiceProvider extends IlluminateServiceProvider
     private function getConfigPath(): string
     {
         return __DIR__ . '/../../config/unleash.php';
+    }
+
+    /**
+     * Get the path to the feature config.
+     *
+     * @return string
+     */
+    private function getFeatureConfigPath(): string
+    {
+        return __DIR__ . '/../../config/features.php';
     }
 }

@@ -15,6 +15,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Enable/disable fetching to remote Unleash server
+    |--------------------------------------------------------------------------
+    |
+    | Enable/disable switch for the Laravel Unleash server so you can use bootstrapping
+    |
+    */
+
+    'fetching_enabled' => env('UNLEASH_FETCHING_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Unleash URL
     |--------------------------------------------------------------------------
     |
@@ -85,7 +96,7 @@ return [
     */
 
     'cache' => [
-        'enabled' => env('UNLEASH_CACHE_ENABLED', false),
+        'enabled' => env('UNLEASH_CACHE_ENABLED', true), // Cache default enabled to use Cache handler below, bc. Unleash builder always uses cache
         'ttl' => env('UNLEASH_CACHE_TTL', 30),
         'handler' => JWebb\Unleash\Cache\CacheHandler::class
     ],
