@@ -77,6 +77,7 @@ class Unleash implements UnleashClient
                 // Throw exception
                 throw new \Exception('Unleash error: ' . $e->getMessage());
             }
+            return [];
         }
     }
 
