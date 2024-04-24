@@ -30,6 +30,9 @@ UNLEASH_URL=https://app.unleash-hosted.com/
 # Enable or disable the Laravel Unleash client. If disabled, all feature checks will return false
 UNLEASH_ENABLED=true
 
+# Enable or disable fetching of features from the Unleash server, can fallback on Bootstrap method (see config/features.php)
+UNLEASH_FETCHING_ENABLED=true
+
 # For compatibility with Unleash V4, or other authentcation methods. Appends itself to the `Authorization` header for each request
 UNLEASH_API_KEY=123456
 
@@ -54,27 +57,8 @@ UNLEASH_CACHE_TTL=30
 ```
 
 #### Setting up the Middleware
-The module comes bundled with middleware for you to perform a feature check on routes and/or controllers.
-```php
-#/app/Http/Kernel.php
-protected $routeMiddleware = [
-    ...
-    'feature' => \JWebb\Unleash\Middleware\CheckFeature::class,
-    ...
-];
-```
 
-Once added to your `Kernel.php` file, you can use this in any area where middleware is applicable.
-As an example, you could use this in a controller.
-```php
-
-public function __construct()
-{
-    $this->middleware('feature:your_feature_name');
-}
-
-```
-See the [Laravel Docs](https://laravel.com/docs/middleware) for more information.
+See [Middleware](/docs/database.md)
 
 #### Setting up a custom cache handler
 If the cache option is enabled, by default the component will use the Laravel Cache module. By utilizing the `UnleashCacheHandlerInterface`, you can create your own PSR-16 compatible implementation and override the `unleash.cache.handler` config value with your handler class.
@@ -89,6 +73,8 @@ If you want to send more context by default, you can overwrite the `UnleashConte
 
 Checking individual features
 ```php
+use JWebb\Unleash\Facades\Unleash;
+
 if (Unleash::isEnabled('your_feature')) {
     // Your feature is enabled
 }
@@ -97,6 +83,8 @@ if (Unleash::isEnabled('your_feature')) {
 Using array of features.
 ```php
 // List of all features, enabled or disabled
+use JWebb\Unleash\Facades\Unleash;
+
 $allFeatures = Unleash::getFeatures();
 Result: [
     'toggles' => [
@@ -176,3 +164,6 @@ Or if a feature is **disabled**:
     <p>Enroll now to be a beta tester.</p>
 @endfeatureDisabled
 ```
+
+### Database
+See [Database](/docs/database.md)

@@ -73,6 +73,10 @@ class Unleash implements UnleashClient
 
             return $toggles;
         } catch (\Exception $e) {
+            if (config('app.env') === 'development') {
+                // Throw exception
+                throw new \Exception('Unleash error: ' . $e->getMessage());
+            }
             return [];
         }
     }
@@ -106,4 +110,5 @@ class Unleash implements UnleashClient
 
         return $reflectionProperty->getValue($this->client);
     }
+
 }
