@@ -26,7 +26,7 @@ BEGIN
 	SELECT
 		@Enabled = CAST(JSON_VALUE(JSON_QUERY(F.[JSON_VALUE], '$.toggles."' + @Feature + '"'), '$.enabled') AS BIT)
 	FROM dbo.FEATURES F WITH (NOLOCK)
-	WHERE F.ID = @ID
+	WHERE F.CONTEXT_ID = @ID
 
 	RETURN ISNULL(@Enabled, @Default)
 
