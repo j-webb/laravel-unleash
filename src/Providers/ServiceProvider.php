@@ -61,13 +61,13 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot(): void
     {
-        if (! config('unleash.enabled')) {
-            return;
-        }
-
         $this->publishes([
             $this->getConfigPath() => config_path('unleash.php'),
         ]);
+
+        if (! config('unleash.enabled')) {
+            return;
+        }
 
         Blade::if('featureEnabled', function (string $feature) {
             return app(Unleash::class)->isEnabled($feature);
