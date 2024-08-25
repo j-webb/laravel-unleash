@@ -3,21 +3,14 @@
 namespace JWebb\Unleash\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use JWebb\Unleash\Unleash;
 
 class CheckFeature
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @param $featureName
-     * @return mixed
-     */
-    public function handle($request, Closure $next, $featureName)
+    public function handle(Request $request, Closure $next, $featureName): mixed
     {
-        if (!app(Unleash::class)->isEnabled($featureName)) {
+        if (! app(Unleash::class)->isEnabled($featureName)) {
             abort(404);
         }
 

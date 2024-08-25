@@ -79,8 +79,12 @@ class CacheBridge implements CacheInterface
     public function deleteMultiple($keys): bool
     {
         foreach ($keys as $key) {
-            $this->delete($key);
+            if ($this->delete($key) === false) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**

@@ -23,11 +23,16 @@
             "email": "jonwebb247@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
-                "JWebb\\Unleash\\Providers\\ServiceProvider"
-            ]
+                "JWebb\\Unleash\\ServiceProvider"
+            ],
+            "aliases": {
+                "Unleash": "JWebb\\Unleash\\Facades\\Unleash"
+            }
         }
     }
 }

@@ -95,10 +95,10 @@ class Unleash implements UnleashClient
     }
 
     /**
-     * @param  string  $featureName
-     * @param  Context|null  $context
-     * @param  Variant|null  $fallbackVariant
-     * @return ?Variant
+     * @param string $featureName
+     * @param Context|null $context
+     * @param Variant|null $fallbackVariant
+     * @return Variant
      */
     public function getVariant(string $featureName, ?Context $context = null, ?Variant $fallbackVariant = null): Variant
     {
@@ -119,7 +119,6 @@ class Unleash implements UnleashClient
     protected function getRepository(): UnleashRepository
     {
         $reflectionProperty = new ReflectionProperty(get_class($this->client), 'repository');
-        $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty->getValue($this->client);
     }
