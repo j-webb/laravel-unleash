@@ -18,11 +18,17 @@ composer require j-webb/laravel-unleash
 php artisan vendor:publish --provider="JWebb\Unleash\Providers\ServiceProvider"
 ```
 
+#### Run migartions
+```bash
+php artisan migrate
+```
+
 #### Required .env values
 
 ```dotenv
-# Your Unleash instance endpoint
-UNLEASH_URL=https://app.unleash-hosted.com/
+# UNLEASH
+UNLEASH_URL='[API_URL]' #https://featureflag-dev.kjsoftware.nl/api
+UNLEASH_PROJECT_NAME='[NAME_OF_APP_IN_UNLEASH]' #Name of the project in Unleash
 ```
 
 #### Optional .env values
@@ -37,28 +43,40 @@ UNLEASH_FETCHING_ENABLED=true
 UNLEASH_API_KEY=123456
 
 # Instance id for this application (typically hostname, podId or similar)
-UNLEASH_INSTANCE_ID=default 
+UNLEASH_INSTANCE_ID=default
 
 # The Unleash environment name, which can be used to as a parameter for enabling/disabling features for local or development environments
 # See: https://docs.getunleash.io/advanced/strategy_constraints#constrain-on-a-specific-environment
-UNLEASH_ENVIRONMENT=production 
+UNLEASH_ENVIRONMENT=production
 
 # Automatically registers the client instance with the unleash server
-UNLEASH_AUTOMATIC_REGISTRATION=true 
+UNLEASH_AUTOMATIC_REGISTRATION=true
 
 # Enable/Disable metrics
-UNLEASH_METRICS=true 
+UNLEASH_METRICS=true
 
 # Enable/Disable failsafe cache for data
 # See: https://docs.getunleash.io/client-specification#system-overview
-UNLEASH_CACHE_ENABLED=true 
-UNLEASH_CACHE_TTL=30 
+UNLEASH_CACHE_ENABLED=true
+UNLEASH_CACHE_TTL=30
 
 ```
+#### App config
+Add resolver and repository to the `config/unleash.php` file
+```php
+return [
+    'context_provider' => \App\Providers\FeatureFlagContextProvider::class, // Provider from project
+    
+    'context_item_repository' => \App\Repositories\Relation\Contact\ContactRepository::class, // Repository from project
+    
+    'context_item_resolver' => \App\Resolver\ContactResolver::class, // Resolver from project
+]
+````
+
 
 #### Setting up the Middleware
 
-See [Middleware](/docs/database.md)
+See [Middleware](/docs/middleware.md)
 
 #### Setting up a custom cache handler
 If the cache option is enabled, by default the component will use the Laravel Cache module. By utilizing the `UnleashCacheHandlerInterface`, you can create your own PSR-16 compatible implementation and override the `unleash.cache.handler` config value with your handler class.
@@ -164,6 +182,30 @@ Or if a feature is **disabled**:
     <p>Enroll now to be a beta tester.</p>
 @endfeatureDisabled
 ```
+
+#### PHP storm settings
+Add following settings to phpstorm
+* Go to `PHP` -> `Blade` -> `Directives`
+* Add `@featureEnabled` and `@featureDisabled` to the list of custom directives
+
+##### `@featureEnabled`
+* Name: `featureEnabled`
+* Prefix: `<?php if (\\Illuminate\\Support\\Facades\\Feature::isEnabled("`
+* Suffix: `)): ?>"`
+
+##### `@endfeatureEnabled`
+* Name: `endfeatureEnabled`
+
+### `@featureDisabled`
+* Name: `featureDisabled`
+* Prefix: `<?php if (!\\Illuminate\\Support\\Facades\\Feature::isEnabled("`
+* Suffix: `)): ?>"`
+
+### `@endfeatureDisabled`
+* Name: `endfeatureDisabled`
+
+_Example_
+![image](docs/images/Settings.png)
 
 ### Database
 See [Database](/docs/database.md)

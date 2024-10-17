@@ -154,4 +154,8 @@ return [
     */
 
     'context_provider' => JWebb\Unleash\Providers\UnleashContextProvider::class,
+
+    'context_item_repository' => null, // TODO Custom repository
+
+    'context_item_resolver' => null,   // TODO Custom resolver
 ];
