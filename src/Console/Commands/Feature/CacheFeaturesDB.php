@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class CacheFeaturesDB extends Command
 {
-    protected $signature = 'cache:features-d-b ';
+    protected $signature = 'cache:features-d-b';
 
     protected $description = 'Will cache all features from Unleash to the database';
 
