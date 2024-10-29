@@ -15,8 +15,4 @@ interface FeatureServiceContract
     public function getFeatures(): string;
 
     public function setProjectName(string $projectName): void;
-
-    public function setContextItemRepository(ContextItemRepositoryContract $contextItemRepository): void;
-
-    public function setContextItemResolver(ContextItemResolverContract $contextItemResolver): void;
 }

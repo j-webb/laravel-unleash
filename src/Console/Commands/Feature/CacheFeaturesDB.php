@@ -15,8 +15,6 @@ class CacheFeaturesDB extends Command
     {
         $service = app()->make(FeatureServiceContract::class);
         $service->setProjectName(config('unleash.project_name'));
-        $service->setContextItemRepository(app()->make(config('unleash.context_item_repository')));
-        $service->setContextItemResolver(app()->make(config('unleash.context_item_resolver')));
         $service->cacheDatabase();
     }
 }

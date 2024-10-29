@@ -67,11 +67,33 @@ Add resolver and repository to the `config/unleash.php` file
 return [
     'context_provider' => \App\Providers\FeatureFlagContextProvider::class, // Provider from project
     
-    'context_item_repository' => \App\Repositories\Relation\Contact\ContactRepository::class, // Repository from project
-    
-    'context_item_resolver' => \App\Resolver\ContactResolver::class, // Resolver from project
+    'context_items' =>[
+        [
+            'repository' => \App\Repositories\UserRepository::class, //Repository from project
+            'resolver' => \App\Resolver\UserResolver::class //Resolver from project
+        ],
+        [
+            'repository' => \App\Repositories\RelationRepository::class,
+            'resolver' => \App\Resolver\RelationResolver::class
+        ],
+
+    ],
 ]
 ````
+
+
+Make sure that the models that you use and want to resolve, implement the interface and function:
+```php
+use JWebb\Unleash\Contracts\Feature\FeatureModelContract;
+
+class Contact extends Model implements FeatureModelContract
+{
+    public function getStringIdentifier(): ?string
+    {
+        return $this->VolledigeNaam;
+    }
+}
+```
 
 
 #### Setting up the Middleware

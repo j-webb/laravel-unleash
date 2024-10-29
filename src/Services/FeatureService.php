@@ -7,14 +7,13 @@ use JWebb\Unleash\Contracts\Feature\FeatureRepositoryContract;
 use JWebb\Unleash\Contracts\Feature\FeatureServiceContract;
 use JWebb\Unleash\Contracts\Feature\Resolver\ContextItemResolverContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JWebb\Unleash\Facades\Unleash;
 
 class FeatureService implements FeatureServiceContract
 {
     private FeatureRepositoryContract $repository;
-    private ContextItemRepositoryContract $contextItemRepository;
-    private ContextItemResolverContract $contextItemResolver;
     private string $projectName = '';
 
     public function __construct(FeatureRepositoryContract $repository)
@@ -35,24 +34,31 @@ class FeatureService implements FeatureServiceContract
 
     public function cacheDatabase(bool $debug = false): void
     {
-        $contextRepository = $this->contextItemRepository;
+        foreach (config('unleash.context_items') as $contextItem) {
+            if (!isset($contextItem['repository']) || !isset($contextItem['resolver'])){
+                throw new \Exception('Context item should have \'repository\' and \'resolver\' keys.');
+            }
 
-        $contextRepository->getAllContextItems()->each(function (Model $item) use ($contextRepository) {
-            // Set current partnerId for feature context
-            $this->contextItemResolver::setContextItemId($item->getKey());
+            $contextRepository = app()->make($contextItem['repository']);
+            $contextResolver = app()->make($contextItem['resolver']);
 
-            // Get features from unleash
-            $features = $this->getFeatures();
+            $contextRepository->getAllContextItems()->each(function (Model $item) use ($contextRepository, $contextResolver) {
+                // Set current partnerId for feature context
+                $contextResolver::setContextItemId($item->getKey());
 
-            $this->repository->update($item, $features);
+                // Get features from unleash
+                $features = $this->getFeatures();
 
-            // Check if model has getStringIdentifier method
-            if (!method_exists($item, 'getStringIdentifier'))
-                throw new \Exception('Model ' . get_class($item) . ' should implement getStringIdentifier method.');
+                $this->repository->update($item, $features);
 
-            // Log
-            dump("Features for contextItem {$item->getStringIdentifier()} cached.");
-        });
+                // Check if model has getStringIdentifier method
+                if (!method_exists($item, 'getStringIdentifier'))
+                    throw new \Exception('Model ' . get_class($item) . ' should implement getStringIdentifier method.');
+
+                // Log
+                Log::info("Features for contextItem {$item->getStringIdentifier()} cached.");
+            });
+        }
     }
 
     /**
@@ -75,26 +81,6 @@ class FeatureService implements FeatureServiceContract
             dump($features);
 
         return json_encode($features);
-    }
-
-    public function getContextItemRepository(): ContextItemRepositoryContract
-    {
-        return $this->contextItemRepository;
-    }
-
-    public function setContextItemRepository(ContextItemRepositoryContract $contextItemRepository): void
-    {
-        $this->contextItemRepository = $contextItemRepository;
-    }
-
-    public function getContextItemResolver(): ContextItemResolverContract
-    {
-        return $this->contextItemResolver;
-    }
-
-    public function setContextItemResolver(ContextItemResolverContract $contextItemResolver): void
-    {
-        $this->contextItemResolver = $contextItemResolver;
     }
 
     public function getProjectName(): string

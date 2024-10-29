@@ -8,8 +8,8 @@ class CreateFeatureTable extends Migration
 {
     public function up()
     {
-        Schema::create('Feature', function (Blueprint $table) {
-            $table->id();
+        Schema::create('FEATURES', function (Blueprint $table) {
+            $table->bigInteger('ID')->autoIncrement();
             $table->timestamp('TS_CREATED')->nullable();
             $table->timestamp('TS_LASTMODIFIED')->nullable();
             $table->boolean('ACTIVE')->nullable();
