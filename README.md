@@ -66,15 +66,17 @@ Add resolver and repository to the `config/unleash.php` file
 ```php
 return [
     'context_provider' => \App\Providers\FeatureFlagContextProvider::class, // Provider from project
-    
+
     'context_items' =>[
         [
-            'repository' => \App\Repositories\UserRepository::class, //Repository from project
-            'resolver' => \App\Resolver\UserResolver::class //Resolver from project
+            'repository' => \App\Repositories\UserRepository::class,
+            'resolver' => \App\Resolver\UserResolver::class,
+            'property' => 'userId' //Name of property used in Unleash strategy
         ],
         [
             'repository' => \App\Repositories\RelationRepository::class,
-            'resolver' => \App\Resolver\RelationResolver::class
+            'resolver' => \App\Resolver\RelationResolver::class,
+            'property' => 'relationId' //Name of property used in Unleash strategy,
         ],
 
     ],
@@ -95,6 +97,37 @@ class Contact extends Model implements FeatureModelContract
 }
 ```
 
+If you need to use multiple context also extend the UnleashContextProvider and create your own implementation and use it in the config.
+    
+```php
+class UnleashContextProvider extends \JWebb\Unleash\Providers\UnleashContextProvider
+{
+    public function resolveContextId($unleashProperty)
+    {
+        if($unleashProperty === 'userId'){
+            return Auth::id();
+        }elseif ($unleashProperty === 'relationId'){
+            auth()->user()->IQ_PK_RELATION;
+        }
+        return null;
+    }
+
+}
+```
+
+```php
+    /*
+    |--------------------------------------------------------------------------
+    | Context Provider
+    |--------------------------------------------------------------------------
+    |
+    | The provider which handles and initializes the context, giving the option
+    | to sent more context, automatically.
+    |
+    */
+
+    'context_provider' => \App\Providers\UnleashContextProvider::class,
+```
 
 #### Setting up the Middleware
 
