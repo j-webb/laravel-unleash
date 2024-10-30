@@ -20,11 +20,6 @@ class UnleashContextProvider implements BaseUnleashContextProvider
             $contextResolver = app()->make($contextItem['resolver']);
             $resolved = $contextResolver::resolve();
 
-            // If the context item is not resolved, the context is trying to check whether the feature is enabled
-            if(is_null($resolved)){
-                $resolved = $this->resolveContextId($contextItem['property']);
-            }
-
             if ($contextItem['property'] === 'userId') {
                 $context->setCurrentUserId($resolved);
             } else {
@@ -34,14 +29,5 @@ class UnleashContextProvider implements BaseUnleashContextProvider
 
         return $context;     
     }
-
-    public function resolveContextId($unleashProperty)
-    {
-        if($unleashProperty === 'userId'){
-            return Auth::id();
-        }
-        return null;
-    }
-
 
 }

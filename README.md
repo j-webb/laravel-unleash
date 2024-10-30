@@ -97,38 +97,6 @@ class Contact extends Model implements FeatureModelContract
 }
 ```
 
-If you need to use multiple context also extend the UnleashContextProvider and create your own implementation and use it in the config.
-    
-```php
-class UnleashContextProvider extends \JWebb\Unleash\Providers\UnleashContextProvider
-{
-    public function resolveContextId($unleashProperty)
-    {
-        if($unleashProperty === 'userId'){
-            return Auth::id();
-        }elseif ($unleashProperty === 'relationId'){
-            auth()->user()->IQ_PK_RELATION;
-        }
-        return null;
-    }
-
-}
-```
-
-```php
-    /*
-    |--------------------------------------------------------------------------
-    | Context Provider
-    |--------------------------------------------------------------------------
-    |
-    | The provider which handles and initializes the context, giving the option
-    | to sent more context, automatically.
-    |
-    */
-
-    'context_provider' => \App\Providers\UnleashContextProvider::class,
-```
-
 #### Setting up the Middleware
 
 See [Middleware](/docs/middleware.md)
