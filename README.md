@@ -97,6 +97,16 @@ class Contact extends Model implements FeatureModelContract
 }
 ```
 
+#### Register the routes
+In order to add the routes to your application, you can add the following line to your project `routes/web.php` file:
+```php
+\JWebb\Unleash\Facades\Unleash::routes();
+```
+
+This adds the following routes to your application:
+- feature-flags/refresh
+
+
 #### Setting up the Middleware
 
 See [Middleware](/docs/middleware.md)
