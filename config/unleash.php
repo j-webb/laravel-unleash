@@ -154,4 +154,13 @@ return [
     */
 
     'context_provider' => JWebb\Unleash\Providers\UnleashContextProvider::class,
+
+    'context_items' =>[
+        [
+            'repository' => '',//TODO Custom repository,
+            'resolver' =>  '',//TODO Custom resolver,
+            'property' =>  '',//TODO Name of property used in Unleash strategy,
+        ],
+
+    ]
 ];

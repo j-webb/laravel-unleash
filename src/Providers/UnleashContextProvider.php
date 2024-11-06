@@ -16,10 +16,18 @@ class UnleashContextProvider implements BaseUnleashContextProvider
     {
         $context = new UnleashContext();
 
-        if (Auth::check()) {
-            $context->setCurrentUserId(Auth::id());
+        foreach (config('unleash.context_items') as $contextItem) {
+            $contextResolver = app()->make($contextItem['resolver']);
+            $resolved = $contextResolver::resolve();
+
+            if ($contextItem['property'] === 'userId') {
+                $context->setCurrentUserId($resolved);
+            } else {
+                $context->setCustomProperty($contextItem['property'], $resolved);
+            }
         }
-        
+
         return $context;     
     }
+
 }

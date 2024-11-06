@@ -5,7 +5,12 @@ namespace JWebb\Unleash\Providers;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use JWebb\Unleash\Console\Commands\Feature\CacheFeaturesDB;
+use JWebb\Unleash\Contracts\Feature\FeatureRepositoryContract;
+use JWebb\Unleash\Contracts\Feature\FeatureServiceContract;
 use JWebb\Unleash\Interfaces\UnleashCacheHandlerInterface;
+use JWebb\Unleash\Repositories\Feature\FeatureRepository;
+use JWebb\Unleash\Services\FeatureService;
 use JWebb\Unleash\Unleash;
 use Unleash\Client\Bootstrap\JsonSerializableBootstrapProvider;
 use Unleash\Client\UnleashBuilder;
@@ -20,6 +25,20 @@ class ServiceProvider extends IlluminateServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom($this->getConfigPath(), 'unleash');
+
+        $this->commands([
+            CacheFeaturesDB::class,
+        ]);
+
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        $this->app->bind(FeatureRepositoryContract::class, function ($app) {
+            return new FeatureRepository();
+        });
+
+        $this->app->bind(FeatureServiceContract::class, function ($app) {
+            return new FeatureService($app->make(FeatureRepositoryContract::class));
+        });
 
         $this->app->singleton(Unleash::class, function ($app) {
             $strategyProvider = config('unleash.strategy_provider');

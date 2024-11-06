@@ -3,6 +3,7 @@
 namespace JWebb\Unleash\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Route;
 
 /**
  * @method static array setClient(Unleash\Client\Unleash $client)
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Facade;
  */
 class Unleash extends Facade
 {
+
+    public static function routes()
+    {
+        Route::prefix('feature-flags')->group(function () {
+            Route::get('/refresh', [\JWebb\Unleash\Controllers\MainController::class, 'refresh'])->name('feature-flags.refresh');
+        });
+
+    }
     /**
      * Get the registered name of the component.
      *

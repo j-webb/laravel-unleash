@@ -16,7 +16,7 @@ class CacheBridge implements CacheInterface
      * @param  null  $default
      * @return mixed
      */
-    public function get($key, $default = null): mixed
+    public function get($key, $default = null) // Mixed not php 7.4 safe
     {
         return Cache::get($key, $default);
     }
