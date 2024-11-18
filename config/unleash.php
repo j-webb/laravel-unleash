@@ -2,6 +2,11 @@
 
 return [
 
+    /**
+     * The name of the project
+     */
+    'project_name' => env('UNLEASH_PROJECT_NAME', 'DEFAULT'),
+
     /*
     |--------------------------------------------------------------------------
     | Enable/disable Laravel Unleash
