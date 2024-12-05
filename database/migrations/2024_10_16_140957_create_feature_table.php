@@ -10,8 +10,8 @@ class CreateFeatureTable extends Migration
     {
         Schema::create('FEATURES', function (Blueprint $table) {
             $table->bigInteger('ID')->autoIncrement();
-            $table->timestamp('TS_CREATED')->nullable();
-            $table->timestamp('TS_LASTMODIFIED')->nullable();
+            $table->timestamp('TS_CREATED')->useCurrent(); 
+            $table->timestamp('TS_LASTMODIFIED')->nullable()->useCurrentOnUpdate(); 
             $table->boolean('ACTIVE')->nullable();
             $table->longText('JSON_VALUE')->nullable();
             $table->integer('CONTEXT_ID')->nullable();

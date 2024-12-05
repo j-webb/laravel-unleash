@@ -2,6 +2,13 @@
 
 return [
 
+    /**
+     * The name of the project
+     */
+    'project_name' => env('UNLEASH_PROJECT_NAME', 'DEFAULT'),
+
+    'guard' => 'auth',
+
     /*
     |--------------------------------------------------------------------------
     | Enable/disable Laravel Unleash
