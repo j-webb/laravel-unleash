@@ -9,6 +9,8 @@ return [
 
     'guard' => 'auth',
 
+    'debug' => env('UNLEASH_DEBUG', false),
+
     /*
     |--------------------------------------------------------------------------
     | Enable/disable Laravel Unleash
