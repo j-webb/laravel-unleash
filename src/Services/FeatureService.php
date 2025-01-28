@@ -55,8 +55,11 @@ class FeatureService implements FeatureServiceContract
                 if (!method_exists($item, 'getStringIdentifier'))
                     throw new \Exception('Model ' . get_class($item) . ' should implement getStringIdentifier method.');
 
-                // Log
-                Log::info("Features for contextItem {$item->getStringIdentifier()} cached.");
+                // Log if debug is true
+                if(config('unleash.debug')){
+                    Log::info("Features for contextItem {$item->getStringIdentifier()} cached.");
+                }
+
             });
         }
     }
