@@ -20,7 +20,7 @@ php artisan vendor:publish --provider="JWebb\Unleash\Providers\ServiceProvider"
 
 #### Run migartions
 ```bash
-php artisan migrate
+php artisan migrate --path=vendor/kjsoftware/laravel-unleash/database/migrations/2024_10_16_140957_create_feature_table.php
 ```
 
 #### Required .env values
