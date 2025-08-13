@@ -18,7 +18,7 @@ class CacheBridge implements CacheInterface
      */
     public function get($key, $default = null) // Mixed not php 7.4 safe
     {
-        return Cache::get($key, $default);
+        return Cache::memo()->get($key, $default);
     }
 
     /**
@@ -29,7 +29,7 @@ class CacheBridge implements CacheInterface
      */
     public function set($key, $value, $ttl = null): bool
     {
-        Cache::put($key, $value, $ttl);
+        Cache::memo()->put($key, $value, $ttl);
 
         return true;
     }
@@ -40,7 +40,7 @@ class CacheBridge implements CacheInterface
      */
     public function delete($key): bool
     {
-        return Cache::forget($key);
+        return Cache::memo()->forget($key);
     }
 
     /**
@@ -48,7 +48,7 @@ class CacheBridge implements CacheInterface
      */
     public function clear(): bool
     {
-        return Cache::flush();
+        return Cache::memo()->flush();
     }
 
     /**
@@ -58,7 +58,7 @@ class CacheBridge implements CacheInterface
      */
     public function getMultiple($keys, $default = null): array
     {
-        return Cache::many($keys);
+        return Cache::memo()->many($keys);
     }
 
     /**
@@ -68,7 +68,7 @@ class CacheBridge implements CacheInterface
      */
     public function setMultiple($values, $ttl = null): bool
     {
-        Cache::putMany($values, $ttl);
+        Cache::memo()->putMany($values, $ttl);
 
         return true;
     }
@@ -89,6 +89,6 @@ class CacheBridge implements CacheInterface
      */
     public function has($key): bool
     {
-        return Cache::has($key);
+        return Cache::memo()->has($key);
     }
 }
