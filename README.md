@@ -55,8 +55,19 @@ UNLEASH_CACHE_TTL=30
 
 #### Setting up the Middleware
 The module comes bundled with middleware for you to perform a feature check on routes and/or controllers.
+
+**Laravel 11+ / Laravel 13 (`bootstrap/app.php`)**
 ```php
-#/app/Http/Kernel.php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'feature' => \JWebb\Unleash\Middleware\CheckFeature::class,
+    ]);
+})
+```
+
+**Laravel 6–10 (`app/Http/Kernel.php`)**
+```php
 protected $routeMiddleware = [
     ...
     'feature' => \JWebb\Unleash\Middleware\CheckFeature::class,
@@ -64,15 +75,13 @@ protected $routeMiddleware = [
 ];
 ```
 
-Once added to your `Kernel.php` file, you can use this in any area where middleware is applicable.
+Once registered, you can use this in any area where middleware is applicable.
 As an example, you could use this in a controller.
 ```php
-
 public function __construct()
 {
     $this->middleware('feature:your_feature_name');
 }
-
 ```
 See the [Laravel Docs](https://laravel.com/docs/middleware) for more information.
 
@@ -151,7 +160,7 @@ $context = (new UnleashContext())
     ->setSessionId('sess-123456');
 $enabled = Unleash::isEnabled('some-feature', $context);
 ```
-*Note: User ID information is automatically added to the context using the [Laravel Auth module](https://laravel.com/docs/8.x/authentication)*
+*Note: User ID information is automatically added to the context using the [Laravel Auth module](https://laravel.com/docs/authentication)*
 
 Or get variant information
 ``` php
